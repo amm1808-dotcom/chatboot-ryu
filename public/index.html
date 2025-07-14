@@ -20,7 +20,11 @@
       }
 
       @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
           transform: translateY(0);
         }
         40% {
@@ -148,13 +152,31 @@
       <div class="flex space-x-4 items-center relative">
         <!-- Language Dropdown -->
         <div class="relative dropdown">
-          <button id="language-button" class="text-white hover:text-gray-300 focus:outline-none">
+          <button
+            id="language-button"
+            class="text-white hover:text-gray-300 focus:outline-none"
+          >
             <i class="fas fa-ellipsis-v"></i>
           </button>
           <div id="language-dropdown" class="dropdown-content p-2">
-            <a href="#" class="block text-gray-300 px-4 py-2 hover:bg-gray-700" onclick="changeLanguage('id')">Bahasa Indonesia</a>
-            <a href="#" class="block text-gray-300 px-4 py-2 hover:bg-gray-700" onclick="changeLanguage('en')">English</a>
-            <a href="#" class="block text-gray-300 px-4 py-2 hover:bg-gray-700" onclick="changeLanguage('es')">Español</a>
+            <a
+              href="#"
+              class="block text-gray-300 px-4 py-2 hover:bg-gray-700"
+              onclick="changeLanguage('id')"
+              >Bahasa Indonesia</a
+            >
+            <a
+              href="#"
+              class="block text-gray-300 px-4 py-2 hover:bg-gray-700"
+              onclick="changeLanguage('en')"
+              >English</a
+            >
+            <a
+              href="#"
+              class="block text-gray-300 px-4 py-2 hover:bg-gray-700"
+              onclick="changeLanguage('es')"
+              >Español</a
+            >
           </div>
         </div>
       </div>
@@ -167,7 +189,8 @@
           <div class="chat-bubble ai-bubble p-4 shadow-lg">
             <div class="font-semibold mb-1">-Ryu</div>
             <div>Halo! Gua Ryu. Lu bisa bertanya apa aja!</div>
-            <div class="text-sm text-gray-400 mt-2">12:00 PM</div> <!-- Time at the bottom -->
+            <div class="text-sm text-gray-400 mt-2">12:00 PM</div>
+            <!-- Time at the bottom -->
           </div>
         </div>
       </div>
@@ -201,9 +224,14 @@
         const chatArea = document.querySelector(".max-w-3xl");
         const messageDiv = document.createElement("div");
         messageDiv.className = `chat-bubble ${sender}-bubble p-4`;
-        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Format the current time
+        const time = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }); // Format the current time
         messageDiv.innerHTML = `
-          <div class="font-semibold mb-1">${sender === "ai" ? "-Ryu" : "Kamu"}</div>
+          <div class="font-semibold mb-1">${
+            sender === "ai" ? "-Ryu" : "Kamu"
+          }</div>
           <div>${message}</div>
           <div class="text-sm text-gray-400 mt-2">${time}</div> <!-- Time at the bottom -->
         `;
@@ -234,7 +262,7 @@
       }
 
       async function callGenAI(prompt) {
-        const response = await fetch("http://localhost:4000/generate", {
+        const response = await fetch("/api/generate", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -246,35 +274,39 @@
         return data.text;
       }
 
-      document.getElementById("send-button").addEventListener("click", async function () {
-        const message = document.getElementById("message-input").value.trim();
-        if (message) {
-          addMessageToChat("user", message);
-          document.getElementById("message-input").value = "";
+      document
+        .getElementById("send-button")
+        .addEventListener("click", async function () {
+          const message = document.getElementById("message-input").value.trim();
+          if (message) {
+            addMessageToChat("user", message);
+            document.getElementById("message-input").value = "";
 
-          const typingDiv = addTypingAnimation();
+            const typingDiv = addTypingAnimation();
 
-          try {
-            const aiResponse = await callGenAI(message);
-            setTimeout(() => {
+            try {
+              const aiResponse = await callGenAI(message);
+              setTimeout(() => {
+                typingDiv.remove();
+                addMessageToChat("ai", aiResponse);
+                scrollToBottom();
+              }, 1000);
+            } catch (error) {
               typingDiv.remove();
-              addMessageToChat("ai", aiResponse);
-              scrollToBottom();
-            }, 1000);
-          } catch (error) {
-            typingDiv.remove();
-            addMessageToChat("ai", "Maaf, terjadi kesalahan saat memproses.");
+              addMessageToChat("ai", "Maaf, terjadi kesalahan saat memproses.");
+            }
           }
-        }
-      });
+        });
 
-      document.getElementById("message-input").addEventListener("keydown", function (event) {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          document.getElementById("send-button").click();
-          scrollToBottom();
-        }
-      });
+      document
+        .getElementById("message-input")
+        .addEventListener("keydown", function (event) {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            document.getElementById("send-button").click();
+            scrollToBottom();
+          }
+        });
 
       function changeLanguage(languageCode) {
         alert("Bahasa diubah ke: " + languageCode);

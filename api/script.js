@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import { GoogleGenAI } from "@google/genai";
 import serverless from "serverless-http";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const port = 4000;
@@ -16,7 +19,7 @@ app.use(
 
 // Inisialisasi GoogleGenAI API
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyC0Z0ALZyg-0l41yplrIgR238XKEpxAvu8", // Ganti dengan API Key kamu
+  apiKey: process.env.API_KEY, // Ganti dengan API Key kamu
 });
 
 // Route untuk menangani permintaan dari klien
