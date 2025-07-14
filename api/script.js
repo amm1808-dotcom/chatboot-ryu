@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const port = 4000;
 
 // Inisialisasi middleware untuk parsing JSON
 app.use(express.json());
@@ -52,4 +51,4 @@ app.post("/generate", async (req, res) => {
   }
 });
 
-export const handler = serverless(app);
+export default serverless(app);
