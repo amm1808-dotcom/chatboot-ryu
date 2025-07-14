@@ -262,7 +262,7 @@
       }
 
       async function callGenAI(prompt) {
-        const response = await fetch("/api/generate", {
+        const response = await fetch("/api/script/generate", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
