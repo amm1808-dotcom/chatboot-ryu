@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { GoogleGenAI } from "@google/genai";
+import serverless from "serverless-http";
 
 const app = express();
 const port = 4000;
