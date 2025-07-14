@@ -21,12 +21,12 @@ const ai = new GoogleGenAI({
   apiKey: process.env.API_KEY, // Ganti dengan API Key kamu
 });
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Hello World!");
 });
 
 // Route untuk menangani permintaan dari klien
-app.post("/generate", async (req, res) => {
+app.post("/api/generate", async (req, res) => {
   const { message, aiName } = req.body; // Menambahkan parameter aiName
 
   if (!message) {
