@@ -262,13 +262,16 @@
       }
 
       async function callGenAI(prompt) {
-        const response = await fetch("/api/script/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message: prompt }),
-        });
+        const response = await fetch(
+          "https://backend-chatbot-two.vercel.app/api/generate",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: prompt }),
+          }
+        );
 
         const data = await response.json();
         return data.text;
